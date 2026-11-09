@@ -41,9 +41,9 @@ begin
                         op1 or op2      when op_type = ALU_OP_TYPE_OR       else
                         op1 xor op2     when op_type = ALU_OP_TYPE_XOR      else
                           
-                        std_logic_vector(shift_left(unsigned(op1), to_integer(unsigned(op2))))    when op_type = ALU_OP_TYPE_SLL   else 
-                        std_logic_vector(shift_right(unsigned(op1), to_integer(unsigned(op2))))   when op_type = ALU_OP_TYPE_SRL   else
-                        std_logic_vector(shift_right(signed(op1), to_integer(unsigned(op2))))     when op_type = ALU_OP_TYPE_SRA   else
+                        std_logic_vector(shift_left(unsigned(op1), to_integer(unsigned(op2(4 downto 0)))))    when op_type = ALU_OP_TYPE_SLL   else 
+                        std_logic_vector(shift_right(unsigned(op1), to_integer(unsigned(op2(4 downto 0)))))   when op_type = ALU_OP_TYPE_SRL   else
+                        std_logic_vector(shift_right(signed(op1), to_integer(unsigned(op2(4 downto 0)))))     when op_type = ALU_OP_TYPE_SRA   else
                         
                         (others => '0');
 

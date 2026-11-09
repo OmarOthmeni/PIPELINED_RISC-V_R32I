@@ -36,7 +36,7 @@ architecture Behavioral of data_memory is
 begin
 
     addr_relative <= std_logic_vector(unsigned(addr) - to_unsigned(DATA_RAM_BASE_ADDRESS, addr'length))
-                        when to_integer(unsigned(addr)) >= DATA_RAM_BASE_ADDRESS
+                        when unsigned(addr) >= to_unsigned(DATA_RAM_BASE_ADDRESS, addr'length)
                         else
                      std_logic_vector(unsigned(addr) - to_unsigned(DATA_MEMORY_BASE_ADDRESS, addr'length));
 
@@ -61,7 +61,7 @@ begin
         );
         
         
-    data_out <= data_out_ram_signal when to_integer(unsigned(addr)) >= DATA_RAM_BASE_ADDRESS else data_out_rom_signal;
+    data_out <= data_out_ram_signal when unsigned(addr) >= to_unsigned(DATA_RAM_BASE_ADDRESS, addr'length) else data_out_rom_signal;
 
 
 end Behavioral;
