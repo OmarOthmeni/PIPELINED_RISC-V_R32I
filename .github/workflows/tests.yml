@@ -1,0 +1,26 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  simulate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install GHDL
+        run: |
+          curl -sSL -o ghdl.tgz https://github.com/ghdl/ghdl/releases/download/v6.0.0/ghdl-mcode-6.0.0-ubuntu24.04-x86_64.tar.gz
+          mkdir -p $HOME/ghdl && tar -xzf ghdl.tgz -C $HOME/ghdl --strip-components=1
+          echo "$HOME/ghdl/bin" >> $GITHUB_PATH
+
+      - name: Install RISC-V GCC (xPack)
+        run: |
+          curl -sSL -o gcc.tgz https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v15.2.0-1/xpack-riscv-none-elf-gcc-15.2.0-1-linux-x64.tar.gz
+          mkdir -p $HOME/rvgcc && tar -xzf gcc.tgz -C $HOME/rvgcc --strip-components=1
+          echo "$HOME/rvgcc/bin" >> $GITHUB_PATH
+
+      - name: Run test programs in simulation
+        run: bash scripts/run_tests.sh

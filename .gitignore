@@ -1,0 +1,24 @@
+# build outputs
+build/
+sw/build/
+*.o
+*.elf
+*.bin
+*.dasm
+
+# simulator outputs
+*.cf
+*.ghw
+*.vcd
+work/
+
+# Vivado
+*.jou
+*.log
+*.str
+.Xil/
+*.cache/
+*.runs/
+*.sim/
+*.hw/
+*.ip_user_files/

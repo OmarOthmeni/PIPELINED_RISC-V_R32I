@@ -13,7 +13,7 @@ architecture Behavioral of CPU_tb is
 
 begin
 
-    clk <= not clk after 5ns;  -- 100MHz clock
+    clk <= not clk after 5 ns;  -- 100MHz clock
 
     CPU : entity work.CPU(Behavioral)
         port map(
@@ -25,9 +25,9 @@ begin
     process
     begin
     
-        wait for 12ns;
+        wait for 12 ns;
         rst <= '0';
-        wait for 1ms;
+        wait for 1 ms;
         rst <= '1';
         wait;
         

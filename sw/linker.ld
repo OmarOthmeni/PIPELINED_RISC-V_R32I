@@ -4,7 +4,7 @@ ENTRY(Reset_Handler)
 
 MEMORY
 {
-    INSTR_MEMORY (rx) : ORIGIN = 0x00000000,                          LENGTH = 1024
+    INSTR_MEMORY (rx) : ORIGIN = 0x00000000,                          LENGTH = 8K
     DATA_ROM     (r)  : ORIGIN = 0x00FC8000,                          LENGTH = 256
     DATA_RAM     (rw) : ORIGIN = ORIGIN(DATA_ROM)+LENGTH(DATA_ROM),   LENGTH = 512
 }
@@ -17,25 +17,34 @@ SECTIONS
         KEEP(*(.iv_table))
         . = _text + 8;    /* 2 interrupt handlers = 8 bytes */
 
-        *(.text)
+        *(.text .text.*)
     } > INSTR_MEMORY
     
     .rodata :
     {
         . = ALIGN(4);
-        *(.rodata)         /* .rodata section (constants, strings, etc.) */
-        *(.srodata) 
+        *(.rodata .rodata.*)     /* constants, strings, etc. */
+        *(.srodata .srodata.*)
         . = ALIGN(4);
     } > DATA_ROM
 
+
+    /* Test mailbox: first word of DATA_RAM (0x00FC8100). A program writes 1 here
+       to report PASS, or (test_number << 1) | 1 to report a failure. */
+    .tohost (NOLOAD) :
+    {
+        . = ALIGN(4);
+        tohost = .;
+        . += 4;
+    } > DATA_RAM
 
     .data :
     {
         . = ALIGN(4);
         _global_pointer_init = . + 0x800;
         _sdata = .;
-        *(.data)
-        *(.sdata)
+        *(.data .data.*)
+        *(.sdata .sdata.*)
         . = ALIGN(4);
         _edata = .;
     } > DATA_RAM AT > DATA_ROM
@@ -45,8 +54,8 @@ SECTIONS
     {
         . = ALIGN(4);
         _sbss = .;
-        *(.sbss)
-        *(.bss)
+        *(.sbss .sbss.*)
+        *(.bss .bss.*)
         *(COMMON)
         . = ALIGN(4);
         _ebss = .;
